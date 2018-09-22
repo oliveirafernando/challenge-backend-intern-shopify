@@ -1,8 +1,5 @@
 package ca.shopify.backend.challenge.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,29 +15,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.shopify.backend.challenge.controller.dto.ProductDTO;
-import ca.shopify.backend.challenge.controller.dto.converter.ProductConverter;
+import ca.shopify.backend.challenge.controller.dto.ShopDTO;
+import ca.shopify.backend.challenge.controller.dto.converter.ShopConverter;
 import ca.shopify.backend.challenge.controller.response.Response;
-import ca.shopify.backend.challenge.model.Product;
+import ca.shopify.backend.challenge.model.Shop;
 import ca.shopify.backend.challenge.service.EntityValidationException;
 import ca.shopify.backend.challenge.service.PageableException;
-import ca.shopify.backend.challenge.service.ProductService;
+import ca.shopify.backend.challenge.service.ShopService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/api/product")
-@Api(value = "product_controller")
-public class ProductController {
+@RequestMapping("/api/shop")
+@Api(value = "shop_controller")
+public class ShopController {
 
 	@Autowired
-	private ProductService productService;
+	private ShopService shopService;
 
-	private ProductConverter converter = new ProductConverter();
+	private ShopConverter converter = new ShopConverter();
 
-	@ApiOperation(value = "View a list of available products", response = ProductDTO.class)
+	@ApiOperation(value = "View a list of available shops", response = ShopDTO.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Successfully retrieved list"),
 			@ApiResponse(code = 400, message = "You are not authorized to view the resource") 
@@ -52,7 +49,7 @@ public class ProductController {
 		Response<Object> response = new Response<Object>();
 		try {
 			response.setData(
-					this.productService.getAllPaginated(page, count).stream().map(sh -> this.converter.apply(sh)));
+					this.shopService.getAllPaginated(page, count).stream().map(sh -> this.converter.apply(sh)));
 
 		} catch (PageableException e) {
 			response.addError(e.getMessage());
@@ -64,7 +61,7 @@ public class ProductController {
 	@GetMapping(value = "/count", produces = "application/json")
 	public ResponseEntity<Object> count(Model model) {
 		Response<Object> response = new Response<Object>();
-		response.setData(this.productService.countAll());
+		response.setData(this.shopService.countAll());
 		return ResponseEntity.ok(response);
 	}
 
@@ -73,27 +70,7 @@ public class ProductController {
 		Response<Object> response = new Response<Object>();
 
 		try {
-			response.setData(this.converter.apply(this.productService.findById(id)));
-
-		} catch (EntityValidationException e) {
-			response.addError(e.getMessage());
-			return ResponseEntity.badRequest().body(response);
-		}
-		return ResponseEntity.ok(response);
-
-	}
-	
-	@GetMapping(value = "/byShopId/{shopId}", produces = "application/json")
-	public ResponseEntity<Object> findByShopId(Model model, @PathVariable("shopId") Long shopId) {
-		Response<Object> response = new Response<Object>();
-
-		try {
-			List<ProductDTO> prods = this.productService.getProductsByShopId(shopId)
-					.stream()
-					.map(this.converter::apply)
-					.collect(Collectors.toList());
-			prods.forEach(p -> p.setShopDTO(null));
-			response.setData(prods);
+			response.setData(this.converter.apply(this.shopService.findById(id)));
 
 		} catch (EntityValidationException e) {
 			response.addError(e.getMessage());
@@ -104,14 +81,14 @@ public class ProductController {
 	}
 
 	@PostMapping(produces = "application/json")
-	public ResponseEntity<Object> create(HttpServletRequest request, @RequestBody ProductDTO productDTO,
+	public ResponseEntity<Object> create(HttpServletRequest request, @RequestBody ShopDTO shopDTO,
 			BindingResult result) {
 
-		Response<Product> response = new Response<Product>();
+		Response<Shop> response = new Response<Shop>();
 		try {
-			Product product = this.converter.unapply(productDTO);
-			Product productPersisted = this.productService.create(product);
-			response.setData(productPersisted);
+			Shop shop = this.converter.unapply(shopDTO);
+			Shop shopPersisted = this.shopService.create(shop);
+			response.setData(shopPersisted);
 		} catch (Exception e) {
 			response.addError(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
@@ -120,14 +97,14 @@ public class ProductController {
 	}
 
 	@PutMapping(produces = "application/json")
-	public ResponseEntity<Object> update(HttpServletRequest request, @RequestBody ProductDTO productDTO,
+	public ResponseEntity<Object> update(HttpServletRequest request, @RequestBody ShopDTO shopDTO,
 			BindingResult result) {
 
-		Response<Product> response = new Response<Product>();
+		Response<Shop> response = new Response<Shop>();
 		try {
-			Product product = this.converter.unapply(productDTO);
-			Product productPersisted = this.productService.update(product);
-			response.setData(productPersisted);
+			Shop shop = this.converter.unapply(shopDTO);
+			Shop shopPersisted = this.shopService.update(shop);
+			response.setData(shopPersisted);
 		} catch (Exception e) {
 			response.addError(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
@@ -139,7 +116,7 @@ public class ProductController {
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id, Model model) {
 		Response<Object> response = new Response<Object>();
 		try {
-			this.productService.delete(id);
+			this.shopService.delete(id);
 		} catch (EntityValidationException e) {
 			response.addError(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
