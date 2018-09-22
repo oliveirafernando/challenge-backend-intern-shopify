@@ -1,5 +1,7 @@
 package ca.shopify.backend.challenge.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -32,9 +34,9 @@ public class Product {
 	@Setter
 	private Shop shop;
 
-//	@Getter
-//	@Setter
-//	private BigDecimal dollarValue;
+	@Getter
+	@Setter
+	private BigDecimal dollarValue;
 
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
 //	@Getter

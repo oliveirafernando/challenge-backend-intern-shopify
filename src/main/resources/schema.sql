@@ -6,6 +6,7 @@ CREATE TABLE tbl_shop (
 CREATE TABLE tbl_product (
 	id 				BIGINT 			AUTO_INCREMENT,
 	name 			VARCHAR(255) 	NOT NULL,
+	dollar_value	DECIMAL(19,2)	NOT NULL,
 	shop_fk			BIGINT			NOT NULL
 );
 

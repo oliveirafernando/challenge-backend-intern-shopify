@@ -1,14 +1,42 @@
 package ca.shopify.backend.challenge.service;
 
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 import ca.shopify.backend.challenge.model.Shop;
+import ca.shopify.backend.challenge.repository.ShopRepository;
 
-public interface ShopService {
+@Service
+public class ShopService extends AbstractService<Shop> {
 
-	Page<Shop> getAllShops(int pageNumber, int count) throws PageableException;
+	protected ShopService(ShopRepository repository) {
+		super(repository);
+	}
 
-	Optional<Shop> findById(Long id);
+	@Override
+	protected Shop validate(Shop shop) throws EntityValidationException {
+		if (shop == null) {
+			throw new EntityValidationException("Shop entity cannot be null.");
+		}
+		if (shop.getName() == null || shop.getName().isEmpty()) {
+			throw new EntityValidationException("Name field cannot be null.");
+		}
+
+		return shop;
+	}
+
+	@Override
+	protected Shop setId(Shop entity, Long id) {
+		entity.setId(id);
+		return entity;
+	}
+
+	@Override
+	protected Long getId(Shop entity) {
+		return entity.getId();
+	}
+
+	@Override
+	protected String getEntityName() {
+		return Shop.class.getSimpleName();
+	}
 }

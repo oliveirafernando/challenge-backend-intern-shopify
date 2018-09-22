@@ -1,5 +1,6 @@
 package ca.shopify.backend.challenge.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,18 +38,18 @@ public class Order {
 	@Setter
 	private Set<LineItem> lineItems;
 
+	@Transient
+	private BigDecimal dollarValue;
+
 	public Order() {
 		this.dateTime = LocalDateTime.now();
 		this.lineItems = new LinkedHashSet<LineItem>();
 	}
 
-//	@Transient
-//	private BigDecimal dollarValue;
-
-//	public BigDecimal getDollarValue() {
-//		return this.lineItems
-//				.stream()
-//				.map(li -> li.getProduct().getDollarValue())
-//				.reduce(BigDecimal.ZERO, (p, q) -> p.add(q));
-//	}
+	public BigDecimal getDollarValue() {
+		return this.lineItems
+				.stream()
+				.map(li -> li.getProduct().getDollarValue())
+				.reduce(BigDecimal.ZERO, (p, q) -> p.add(q));
+	}
 }
