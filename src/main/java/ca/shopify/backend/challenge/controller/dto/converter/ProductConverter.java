@@ -1,5 +1,6 @@
-package ca.shopify.backend.challenge.controller.dto;
+package ca.shopify.backend.challenge.controller.dto.converter;
 
+import ca.shopify.backend.challenge.controller.dto.ProductDTO;
 import ca.shopify.backend.challenge.model.Product;
 
 public class ProductConverter implements DTOConverter<Product, ProductDTO> {
@@ -17,7 +18,7 @@ public class ProductConverter implements DTOConverter<Product, ProductDTO> {
 		dto.setName(entity.getName());
 		
 		if(entity.getShop() != null) {
-			dto.setShop(this.shopConverter.apply(entity.getShop()));			
+			dto.setShopDTO(this.shopConverter.apply(entity.getShop()));			
 		}
 		
 		dto.setDollarValue(entity.getDollarValue());
@@ -30,8 +31,8 @@ public class ProductConverter implements DTOConverter<Product, ProductDTO> {
 		product.setId(dto.getId());
 		product.setName(dto.getName());
 		
-		if(dto.getShop() != null) {
-			product.setShop(this.shopConverter.unapply(dto.getShop()));			
+		if(dto.getShopDTO() != null) {
+			product.setShop(this.shopConverter.unapply(dto.getShopDTO()));			
 		}
 		
 		product.setDollarValue(dto.getDollarValue());

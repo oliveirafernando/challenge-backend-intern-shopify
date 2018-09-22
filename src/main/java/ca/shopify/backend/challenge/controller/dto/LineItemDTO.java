@@ -5,22 +5,25 @@ import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 
-public class ProductDTO{
+public class LineItemDTO {
 
 	@Getter
 	@Setter
 	private Long id;
 
-	@Getter
-	@Setter
-	private String name;
+//	@Getter
+//	@Setter
+//	private OrderDTO orderDTO;
 
 	@Getter
 	@Setter
-	private ShopDTO shopDTO;
+	private ProductDTO productDTO;
+
+	@Getter
+	@Setter
+	private Integer amount;
 
 	@Getter
 	@Setter
 	private BigDecimal dollarValue;
-
 }

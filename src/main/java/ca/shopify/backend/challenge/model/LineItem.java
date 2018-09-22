@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,24 +33,26 @@ public class LineItem {
 	@Getter
 	@Setter
 	private Order order;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_fk", nullable = false)
 	@Getter
 	@Setter
 	private Product product;
-	
+
 	@Column(name = "amount")
 	@Getter
 	@Setter
 	private Integer amount;
 
 	@Transient
+	@Setter
 	private BigDecimal dollarValue;
 
-	public LineItem(Integer amount, Product product) {
-		this.amount = amount;
-		this.product = product;
-		this.dollarValue = this.product.getDollarValue();
+	public BigDecimal getDollarValue() {
+		if (this.product != null) {
+			return this.product.getDollarValue().multiply(new BigDecimal(this.amount));
+		}
+		return dollarValue;
 	}
 }

@@ -2,8 +2,8 @@ package ca.shopify.backend.challenge.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,20 +36,19 @@ public class Order {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
 	@Getter
 	@Setter
-	private Set<LineItem> lineItems;
+	private List<LineItem> lineItems;
 
 	@Transient
+	@Setter
 	private BigDecimal dollarValue;
 
 	public Order() {
 		this.dateTime = LocalDateTime.now();
-		this.lineItems = new LinkedHashSet<LineItem>();
+		this.lineItems = new LinkedList<LineItem>();
 	}
 
 	public BigDecimal getDollarValue() {
-		return this.lineItems
-				.stream()
-				.map(li -> li.getProduct().getDollarValue())
-				.reduce(BigDecimal.ZERO, (p, q) -> p.add(q));
+		return this.lineItems.stream().map(li -> li.getDollarValue()).reduce(BigDecimal.ZERO,
+				(p, q) -> p.add(q));
 	}
 }

@@ -1,5 +1,6 @@
-package ca.shopify.backend.challenge.controller.dto;
+package ca.shopify.backend.challenge.controller.dto.converter;
 
+import ca.shopify.backend.challenge.controller.dto.ShopDTO;
 import ca.shopify.backend.challenge.model.Shop;
 
 public class ShopConverter implements DTOConverter<Shop, ShopDTO> {

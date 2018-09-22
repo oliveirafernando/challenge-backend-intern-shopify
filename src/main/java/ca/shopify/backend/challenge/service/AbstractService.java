@@ -7,9 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
 
-@Service
 public abstract class AbstractService<T> implements GenericService<T> {
 
 	protected JpaRepository<T, Long> repository;

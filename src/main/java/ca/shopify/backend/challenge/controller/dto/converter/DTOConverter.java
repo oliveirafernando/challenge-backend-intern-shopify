@@ -1,4 +1,4 @@
-package ca.shopify.backend.challenge.controller.dto;
+package ca.shopify.backend.challenge.controller.dto.converter;
 
 public interface DTOConverter<T, K> {
 

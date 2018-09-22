@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.shopify.backend.challenge.controller.dto.ProductConverter;
 import ca.shopify.backend.challenge.controller.dto.ProductDTO;
+import ca.shopify.backend.challenge.controller.dto.converter.ProductConverter;
 import ca.shopify.backend.challenge.controller.response.Response;
 import ca.shopify.backend.challenge.model.Product;
 import ca.shopify.backend.challenge.service.EntityValidationException;
@@ -41,8 +41,10 @@ public class ProductController {
 	private ProductConverter converter = new ProductConverter();
 
 	@ApiOperation(value = "View a list of available products", response = ProductDTO.class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
-			@ApiResponse(code = 400, message = "You are not authorized to view the resource") })
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfully retrieved list"),
+			@ApiResponse(code = 400, message = "You are not authorized to view the resource") 
+		})
 	@GetMapping(value = "all/paginated/{page}/{count}", produces = "application/json")
 	public ResponseEntity<Object> getAllPaginated(HttpServletRequest request, @PathVariable int page,
 			@PathVariable int count) {
@@ -90,7 +92,7 @@ public class ProductController {
 					.stream()
 					.map(this.converter::apply)
 					.collect(Collectors.toList());
-			prods.forEach(p -> p.setShop(null));
+			prods.forEach(p -> p.setShopDTO(null));
 			response.setData(prods);
 
 		} catch (EntityValidationException e) {

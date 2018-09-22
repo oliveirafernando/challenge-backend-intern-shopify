@@ -37,59 +37,65 @@ public class ChallengeBootstrap implements ApplicationListener<ContextRefreshedE
 	}
 
 	private void initData() {
-		// ===== SHOPS ===== 
+		// ===== SHOPS =====
 		Shop shopShopify = new Shop();
 		shopShopify.setName("Shopify Shop");
 		this.shopRepository.save(shopShopify);
-		
+
 		Shop anotherShop = new Shop();
 		shopShopify.setName("Another Shop");
 		this.shopRepository.save(anotherShop);
 
-		// ===== PRODUCTS ===== 
+		// ===== PRODUCTS =====
 		Product productTShirt = new Product();
 		productTShirt.setName("Shopify T-shirt");
 		productTShirt.setShop(shopShopify);
-		productTShirt.setDollarValue(new BigDecimal(100.2));
+		productTShirt.setDollarValue(new BigDecimal(20.20));
 		this.productRepository.save(productTShirt);
-		
+
 		Product randomProduct = new Product();
 		randomProduct.setName("Random Product");
 		randomProduct.setShop(anotherShop);
-		randomProduct.setDollarValue(new BigDecimal(48.21));
+		randomProduct.setDollarValue(new BigDecimal(50.25));
 		this.productRepository.save(randomProduct);
 
 		Product productSweater = new Product();
 		productSweater.setName("Shopify Sweater");
 		productSweater.setShop(shopShopify);
-		productSweater.setDollarValue(new BigDecimal(337.54));
+		productSweater.setDollarValue(new BigDecimal(100.49));
 		this.productRepository.save(productSweater);
 
 		Product productGeekAccessory = new Product();
 		productGeekAccessory.setName("Shopify Geek Accessory");
 		productGeekAccessory.setShop(shopShopify);
-		productGeekAccessory.setDollarValue(new BigDecimal(12.77));
+		productGeekAccessory.setDollarValue(new BigDecimal(0.25));
 		this.productRepository.save(productGeekAccessory);
 
-		// ===== ORDERS ===== 
+		// ===== ORDERS =====
 		Order orderAllProductsShopify = new Order();
 		this.orderRepository.save(orderAllProductsShopify);
 
-		LineItem item1 = new LineItem(365, productTShirt);
+		LineItem item1 = new LineItem();
+		item1.setAmount(10);
+		item1.setProduct(productTShirt);
 		item1.setOrder(orderAllProductsShopify);
 		this.lineItemRepository.save(item1);
 
-		LineItem item2 = new LineItem(365 / 4, productSweater);
+		LineItem item2 = new LineItem();
+		item2.setAmount(2);
+		item2.setProduct(productSweater);
 		item2.setOrder(orderAllProductsShopify);
 		this.lineItemRepository.save(item2);
 
-		LineItem item3 = new LineItem(5, productGeekAccessory);
+		LineItem item3 = new LineItem();
+		item3.setAmount(4);
+		item3.setProduct(productGeekAccessory);
 		item3.setOrder(orderAllProductsShopify);
 		this.lineItemRepository.save(item3);
 
 		this.lineItemRepository.saveAll(orderAllProductsShopify.getLineItems());
 		this.orderRepository.save(orderAllProductsShopify);
-		
+
 		// ===== COUNT ALL =====
 		System.out.println("[Shop] Count: " + this.shopRepository.count());
 		System.out.println("[Product] Count: " + this.productRepository.count());

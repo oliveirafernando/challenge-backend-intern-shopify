@@ -1,11 +1,13 @@
 package ca.shopify.backend.challenge.controller.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
 
-public class ProductDTO{
+public class OrderDTO {
 
 	@Getter
 	@Setter
@@ -13,14 +15,13 @@ public class ProductDTO{
 
 	@Getter
 	@Setter
-	private String name;
+	private LocalDateTime dateTime;
 
 	@Getter
 	@Setter
-	private ShopDTO shopDTO;
+	private List<LineItemDTO> lineItemsDTO;
 
 	@Getter
 	@Setter
 	private BigDecimal dollarValue;
-
 }

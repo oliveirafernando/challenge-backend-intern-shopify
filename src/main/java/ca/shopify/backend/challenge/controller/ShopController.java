@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.shopify.backend.challenge.controller.dto.ShopConverter;
 import ca.shopify.backend.challenge.controller.dto.ShopDTO;
+import ca.shopify.backend.challenge.controller.dto.converter.ShopConverter;
 import ca.shopify.backend.challenge.controller.response.Response;
 import ca.shopify.backend.challenge.model.Shop;
 import ca.shopify.backend.challenge.service.EntityValidationException;
@@ -38,8 +38,10 @@ public class ShopController {
 	private ShopConverter converter = new ShopConverter();
 
 	@ApiOperation(value = "View a list of available shops", response = ShopDTO.class)
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list"),
-			@ApiResponse(code = 400, message = "You are not authorized to view the resource") })
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfully retrieved list"),
+			@ApiResponse(code = 400, message = "You are not authorized to view the resource") 
+		})
 	@GetMapping(value = "all/paginated/{page}/{count}", produces = "application/json")
 	public ResponseEntity<Object> getAllPaginated(HttpServletRequest request, @PathVariable int page,
 			@PathVariable int count) {

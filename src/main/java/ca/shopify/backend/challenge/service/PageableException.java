@@ -24,7 +24,7 @@ public class PageableException extends Exception {
 	public String getMessage() {
 		String fullMessage = this.errors.stream().reduce("", (p, q) -> p + "; " + q);
 		fullMessage = fullMessage.substring(2, fullMessage.length());
-		
+
 		return fullMessage;
 	}
 
