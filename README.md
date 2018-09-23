@@ -11,20 +11,18 @@ Here, also is described some steps to build and execute the project.
 ### 1.1. Official repository
 - https://hub.docker.com/r/oliveirafernando/intern-backend-challenge/
 
-### 1.2 Pulling the image
+### 1.2. Pulling the image
 - docker pull oliveirafernando/inter-backend-challenge
 
-### 1.3 Steps Build and Run the project.
-#### 1.3.1 Compiling the image
+### 1.3. Steps Build and Run the project.
+
+#### 1.3.1. Compiling the image
 - sudo ./mvnw install dockerfile:build
 
-#### 1.3.2 Tagging image
-- docker tag springio/intern-backend-challenge:latest oliveirafernando/intern-backend-challenge:latest
+#### 1.3.2. Running the project
+- docker run -p 8080:8080 -t -d oliveirafernando/intern-backend-challenge
 
-#### 1.3.3 Running the project
-- docker run -p 8080:8080 -t oliveirafernando/intern-backend-challenge
-
-#### 1.3.4 Pushing the image (not mandatory if you can only run)
+### 1.4. Pushing the image
 - docker login
 - docker push oliveirafernando/intern-backend-challenge:latest
 
@@ -33,7 +31,22 @@ The API methods were described using Swagger. There, were described the methods,
 - URL: http://localhost:8080/swagger-ui.html
 
 ## 3. Database Access
-- The database client can be accessed by http://localhost:8080/h2/login.jsp
-- Credentials (no password):
+- The database used in this app is an in memory embedded H2 Database.
+- To access the database schema you must download source code from the git repository and then run using maven as described bellow.
+- Requirements:
+	- Jdk 1.8;
+	- Maven 3;
+
+### 3.1. Downloading code from repository using a Git client
+- git clone https://gitlab.com/oliveirafernando/challenge-backend-intern-shopify.git
+
+### 3.2. Running app with Maven
+- mvn spring-boot:run
+
+### 3.3. H2 Console
+- The H2 Console can be accessed by http://localhost:8080/h2/login.jsp
+- Credentials:
+	- Driver Class: org.h2.Driver
+	- JDBC URL: jdbc:h2:mem:testdb
 	- User Name: sa
-	- Password: 
+	- Password: <blank>
