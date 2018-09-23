@@ -31,22 +31,16 @@ The API methods were described using Swagger. There, were described the methods,
 - URL: http://localhost:8080/swagger-ui.html
 
 ## 3. Database Access
-- The database used in this app is an in memory embedded H2 Database.
-- To access the database schema you must download source code from the git repository and then run using maven as described bellow.
-- Requirements:
-	- Jdk 1.8;
-	- Maven 3;
-
-### 3.1. Downloading code from repository using a Git client
-- git clone https://gitlab.com/oliveirafernando/challenge-backend-intern-shopify.git
-
-### 3.2. Running app with Maven
-- mvn spring-boot:run
-
-### 3.3. H2 Console
+- With the App has been started the database access is provided from a browser client.
 - The H2 Console can be accessed by http://localhost:8080/h2/login.jsp
 - Credentials:
 	- Driver Class: org.h2.Driver
 	- JDBC URL: jdbc:h2:mem:testdb
 	- User Name: sa
 	- Password: <blank>
+
+## 4. Git Repository
+- The code was commited in a Gitlab repository using only two branches: development and master.
+- The most stable version can be found in master branch.
+- URL: https://gitlab.com/oliveirafernando/challenge-backend-intern-shopify
+
