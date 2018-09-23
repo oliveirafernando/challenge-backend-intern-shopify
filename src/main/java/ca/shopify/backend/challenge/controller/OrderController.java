@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ca.shopify.backend.challenge.controller.dto.OrderDTO;
 import ca.shopify.backend.challenge.controller.dto.converter.OrderConverter;
 import ca.shopify.backend.challenge.controller.response.Response;
 import ca.shopify.backend.challenge.service.EntityValidationException;
 import ca.shopify.backend.challenge.service.OrderService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/order")
@@ -24,7 +26,7 @@ public class OrderController {
 
 	private OrderConverter converter = new OrderConverter();
 
-//	@ApiOperation(value = "View a list of available order", response = Order.class)
+	@ApiOperation(value = "Description", response = OrderDTO.class)
 //	@ApiResponses(value = { 
 //			@ApiResponse(code = 200, message = "Successfully retrieved list"),
 //			@ApiResponse(code = 400, message = "You are not authorized to view the resource") 
