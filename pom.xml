@@ -92,7 +92,10 @@
 <!-- 						</goals> -->
 <!-- 					</execution> -->
 <!-- 				</executions> -->
+				
 				<configuration>
+					<serverId>docker-hub</serverId>
+					<registryUrl>docker.io</registryUrl>
 					<repository>${docker.image.prefix}/${project.artifactId}</repository>
 					<buildArgs>
 						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
