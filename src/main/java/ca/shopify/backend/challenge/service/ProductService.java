@@ -23,31 +23,30 @@ public class ProductService extends AbstractService<Product> {
 	}
 
 	@Override
-	protected Product validate(Product product) throws EntityValidationException {
+	public Product validate(Product product) throws EntityValidationException {
 		if (product == null) {
-			throw new EntityValidationException("Product entity cannot be null.");
+			throw new EntityValidationException("The Product entity cannot be null.");
 		}
 		if (product.getName() == null || product.getName().isEmpty()) {
-			throw new EntityValidationException("Name field cannot be null.");
+			throw new EntityValidationException("The Product name is mandatory.");
 		}
 
 		if (product.getDollarValue() == null) {
-			throw new EntityValidationException("Dollar value cannot be null.");
+			throw new EntityValidationException("The Product dollar value is mandatory.");
 		}
 
-		if (product.getDollarValue().compareTo(new BigDecimal(0.0)) > 0) {
-			throw new EntityValidationException("Dollar value must be more than or equals to 0");
+		if (product.getDollarValue().compareTo(new BigDecimal(0.0)) < 0) {
+			throw new EntityValidationException("The Product dollar value must be more than or equals to 0");
 		}
 
-		if (product.getShop() == null) {
-			throw new EntityValidationException("Product must be linked with a Shop");
-		}
-
-		if (product.getShop().getId() == null) {
-			throw new EntityValidationException("Product linked with a Shop must have an Id");
+		if (product.getShop() == null || product.getShop().getId() == null) {
+			throw new EntityValidationException("The Product must have a previously created Shop");
 		} else {
-			Shop shop = this.shopService.findById(product.getShop().getId());
-			product.setShop(shop);
+			try {
+				product.setShop(this.shopService.findById(product.getShop().getId()));
+			} catch (EntityValidationException e) {
+				throw new EntityValidationException("The Shop of Product was not previously created.");
+			}
 		}
 		return product;
 	}

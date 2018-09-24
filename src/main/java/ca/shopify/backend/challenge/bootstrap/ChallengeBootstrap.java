@@ -1,6 +1,7 @@
 package ca.shopify.backend.challenge.bootstrap;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -11,6 +12,7 @@ import ca.shopify.backend.challenge.model.LineItem;
 import ca.shopify.backend.challenge.model.Order;
 import ca.shopify.backend.challenge.model.Product;
 import ca.shopify.backend.challenge.model.Shop;
+import ca.shopify.backend.challenge.model.StatusOrderEnum;
 import ca.shopify.backend.challenge.repository.LineItemRepository;
 import ca.shopify.backend.challenge.repository.OrderRepository;
 import ca.shopify.backend.challenge.repository.ProductRepository;
@@ -43,7 +45,7 @@ public class ChallengeBootstrap implements ApplicationListener<ContextRefreshedE
 		this.shopRepository.save(shopShopify);
 
 		Shop anotherShop = new Shop();
-		shopShopify.setName("Another Shop");
+		anotherShop.setName("Another Shop");
 		this.shopRepository.save(anotherShop);
 
 		// ===== PRODUCTS =====
@@ -72,23 +74,34 @@ public class ChallengeBootstrap implements ApplicationListener<ContextRefreshedE
 		this.productRepository.save(productGeekAccessory);
 
 		// ===== ORDERS =====
+		int qtdItem1 = 10;
+		int qtdItem2 = 2;
+		int qtdItem3 = 4;
+		
 		Order orderAllProductsShopify = new Order();
+		orderAllProductsShopify.setStatus(StatusOrderEnum.REALIZED);
+		orderAllProductsShopify.setDateTime(LocalDateTime.now());
+		orderAllProductsShopify.setDollarValue(
+				productTShirt.getDollarValue().multiply(new BigDecimal(qtdItem1))
+				.add(productSweater.getDollarValue().multiply(new BigDecimal(qtdItem2)))
+				.add(productGeekAccessory.getDollarValue().multiply(new BigDecimal(qtdItem3)))
+			);
 		this.orderRepository.save(orderAllProductsShopify);
 
 		LineItem item1 = new LineItem();
-		item1.setAmount(10);
+		item1.setAmount(qtdItem1);
 		item1.setProduct(productTShirt);
 		item1.setOrder(orderAllProductsShopify);
 		this.lineItemRepository.save(item1);
 
 		LineItem item2 = new LineItem();
-		item2.setAmount(2);
+		item2.setAmount(qtdItem2);
 		item2.setProduct(productSweater);
 		item2.setOrder(orderAllProductsShopify);
 		this.lineItemRepository.save(item2);
 
 		LineItem item3 = new LineItem();
-		item3.setAmount(4);
+		item3.setAmount(qtdItem3);
 		item3.setProduct(productGeekAccessory);
 		item3.setOrder(orderAllProductsShopify);
 		this.lineItemRepository.save(item3);

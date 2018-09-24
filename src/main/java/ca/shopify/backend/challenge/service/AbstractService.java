@@ -65,7 +65,7 @@ public abstract class AbstractService<T> implements GenericService<T> {
 		}
 	}
 	
-	protected abstract T validate(T entity) throws EntityValidationException;
+	public abstract T validate(T entity) throws EntityValidationException;
 	protected abstract T setId(T entity, Long value);
 	protected abstract Long getId(T entity);
 	protected abstract String getEntityName();
