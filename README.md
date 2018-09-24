@@ -1,9 +1,9 @@
 # challenge-backend-intern-shopify
 
-Challenge to became intern at Shopify
+Technical challenge to become an intern at Shopify
 
 ## Overview
-The goal of this document is describe the artifacts provided in this project.
+The goal of this document is to describe the artifacts provided in this project.
 Here, also is described some steps to build and execute the project.
 
 ## 1. Docker Image
@@ -40,7 +40,6 @@ The API methods were described using Swagger. There, were described the methods,
 	- Password: <blank>
 
 ## 4. Git Repository
-- The code was commited in a Gitlab repository using only two branches: development and master.
-- The most stable version can be found in master branch.
+- The code was committed in a Gitlab repository using only two branches: development and master.
+- The most stable version can be found in the master branch.
 - URL: https://gitlab.com/oliveirafernando/challenge-backend-intern-shopify
-
