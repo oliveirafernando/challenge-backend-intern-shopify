@@ -23,6 +23,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<docker.image.prefix>oliveirafernando</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -61,7 +62,7 @@
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.8.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
@@ -76,8 +77,32 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.3.6</version>
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<id>default</id> -->
+<!-- 						<phase>install</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>build</goal> -->
+<!-- 							<goal>push</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+				
+				<configuration>
+					<serverId>docker-hub</serverId>
+					<registryUrl>docker.io</registryUrl>
+					<repository>${docker.image.prefix}/${project.artifactId}</repository>
+					<buildArgs>
+						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
-
 </project>
+

@@ -2,21 +2,21 @@ package ca.shopify.backend.challenge.controller.dto.converter;
 
 import ca.shopify.backend.challenge.controller.dto.LineItemDTO;
 import ca.shopify.backend.challenge.model.LineItem;
+import ca.shopify.backend.challenge.model.Product;
 
 public class LineItemConverter implements DTOConverter<LineItem, LineItemDTO> {
-
-	private ProductConverter productConverter = new ProductConverter();
 
 	@Override
 	public LineItemDTO apply(LineItem entity) {
 		LineItemDTO dto = new LineItemDTO();
 		dto.setId(entity.getId());
 		dto.setAmount(entity.getAmount());
-		
-		if(entity.getProduct() != null && entity.getProduct().getShop() != null) {
+		dto.setDollarValue(entity.getDollarValue());
+
+		if (entity.getProduct() != null && entity.getProduct().getShop() != null) {
 			entity.getProduct().setShop(null);
 		}
-		dto.setProductDTO(productConverter.apply(entity.getProduct()));
+		dto.setProductId(entity.getProduct().getId());
 
 		return dto;
 	}
@@ -26,7 +26,11 @@ public class LineItemConverter implements DTOConverter<LineItem, LineItemDTO> {
 		LineItem lineItem = new LineItem();
 		lineItem.setId(dto.getId());
 		lineItem.setDollarValue(dto.getDollarValue());
-		lineItem.setProduct(productConverter.unapply(dto.getProductDTO()));
+		lineItem.setAmount(dto.getAmount());
+
+		Product product = new Product();
+		product.setId(dto.getProductId());
+		lineItem.setProduct(product);
 
 		return lineItem;
 	}

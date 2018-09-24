@@ -14,7 +14,9 @@ ALTER TABLE tbl_product ADD FOREIGN KEY (shop_fk) REFERENCES tbl_shop(id);
 
 CREATE TABLE tbl_order (
 	id 				BIGINT 			AUTO_INCREMENT,
-	date_time		TIMESTAMP		NOT NULL
+	date_time		TIMESTAMP		NOT NULL,
+	dollar_value	DECIMAL(19,2)	NOT NULL,
+	status			VARCHAR(255) 	NOT NULL
 );
 
 CREATE TABLE tbl_line_item (

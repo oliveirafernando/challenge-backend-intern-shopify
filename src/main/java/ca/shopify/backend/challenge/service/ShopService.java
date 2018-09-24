@@ -13,12 +13,12 @@ public class ShopService extends AbstractService<Shop> {
 	}
 
 	@Override
-	protected Shop validate(Shop shop) throws EntityValidationException {
+	public Shop validate(Shop shop) throws EntityValidationException {
 		if (shop == null) {
-			throw new EntityValidationException("Shop entity cannot be null.");
+			throw new EntityValidationException("The Shop entity cannot be null.");
 		}
 		if (shop.getName() == null || shop.getName().isEmpty()) {
-			throw new EntityValidationException("Name field cannot be null.");
+			throw new EntityValidationException("The Shop name is mandatory.");
 		}
 
 		return shop;

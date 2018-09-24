@@ -17,7 +17,7 @@ public class ProductDTO{
 
 	@Getter
 	@Setter
-	private ShopDTO shopDTO;
+	private Long shopId;
 
 	@Getter
 	@Setter

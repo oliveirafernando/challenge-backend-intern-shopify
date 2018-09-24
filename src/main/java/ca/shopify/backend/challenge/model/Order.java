@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +32,7 @@ public class Order {
 	private Long id;
 
 	@Column(name = "date_time")
+	@NotNull
 	@Getter
 	@Setter
 	private LocalDateTime dateTime;
@@ -38,9 +42,16 @@ public class Order {
 	@Setter
 	private List<LineItem> lineItems;
 
-	@Transient
+	@Column(name = "dollar_value")
+	@NotNull
 	@Setter
 	private BigDecimal dollarValue;
+	
+	@Enumerated(value = EnumType.STRING)
+	@NotNull
+	@Getter
+	@Setter
+	private StatusOrderEnum status = StatusOrderEnum.OPENED;
 
 	public Order() {
 		this.dateTime = LocalDateTime.now();
@@ -48,7 +59,11 @@ public class Order {
 	}
 
 	public BigDecimal getDollarValue() {
-		return this.lineItems.stream().map(li -> li.getDollarValue()).reduce(BigDecimal.ZERO,
-				(p, q) -> p.add(q));
+		if (this.dollarValue == null && this.lineItems != null) {
+			this.dollarValue = this.lineItems.stream().map(li -> li.getDollarValue()).reduce(BigDecimal.ZERO,
+					(p, q) -> p.add(q));
+		}
+
+		return this.dollarValue;
 	}
 }

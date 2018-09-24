@@ -32,27 +32,38 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/api/product")
-@Api(value = "product_controller")
+@Api
 public class ProductController {
 
 	@Autowired
 	private ProductService productService;
 
 	private ProductConverter converter = new ProductConverter();
-
-	@ApiOperation(value = "View a list of available products", response = ProductDTO.class)
+	
+	@ApiOperation(value = "Count of all Products", response = Integer.class)
 	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Successfully retrieved list"),
-			@ApiResponse(code = 400, message = "You are not authorized to view the resource") 
+			@ApiResponse(code = 200, message = "Successfull"),
+			@ApiResponse(code = 400, message = "Something was wrong") 
 		})
-	@GetMapping(value = "all/paginated/{page}/{count}", produces = "application/json")
-	public ResponseEntity<Object> getAllPaginated(HttpServletRequest request, @PathVariable int page,
-			@PathVariable int count) {
+	@GetMapping(value = "/count", produces = "application/json")
+	public ResponseEntity<Object> count(Model model) {
+		Response<Object> response = new Response<Object>();
+		response.setData(this.productService.countAll());
+		return ResponseEntity.ok(response);
+	}
+
+	@ApiOperation(value = "Paginated list of Products", response = ProductDTO.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfull"),
+			@ApiResponse(code = 400, message = "Some business rule was not attended") 
+		})
+	@GetMapping(value = "all/page/{page}/size/{size}", produces = "application/json")
+	public ResponseEntity<Object> getAllPaginated(HttpServletRequest request, @PathVariable int page, @PathVariable int size) {
 
 		Response<Object> response = new Response<Object>();
 		try {
 			response.setData(
-					this.productService.getAllPaginated(page, count).stream().map(sh -> this.converter.apply(sh)));
+					this.productService.getAllPaginated(page, size).stream().map(sh -> this.converter.apply(sh)));
 
 		} catch (PageableException e) {
 			response.addError(e.getMessage());
@@ -61,15 +72,13 @@ public class ProductController {
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping(value = "/count", produces = "application/json")
-	public ResponseEntity<Object> count(Model model) {
-		Response<Object> response = new Response<Object>();
-		response.setData(this.productService.countAll());
-		return ResponseEntity.ok(response);
-	}
-
+	@ApiOperation(value = "Product by Id", response = ProductDTO.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfull"),
+			@ApiResponse(code = 400, message = "Entity not found") 
+		})
 	@GetMapping(value = "{id}", produces = "application/json")
-	public ResponseEntity<Object> findById(Model model, @PathVariable("id") Long id) {
+	public ResponseEntity<Object> getById(Model model, @PathVariable("id") Long id) {
 		Response<Object> response = new Response<Object>();
 
 		try {
@@ -83,8 +92,13 @@ public class ProductController {
 
 	}
 	
-	@GetMapping(value = "/byShopId/{shopId}", produces = "application/json")
-	public ResponseEntity<Object> findByShopId(Model model, @PathVariable("shopId") Long shopId) {
+	@ApiOperation(value = "Products by Shop Id", response = ProductDTO.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfull"),
+			@ApiResponse(code = 400, message = "Entity not found") 
+		})
+	@GetMapping(value = "/shop/{shopId}", produces = "application/json")
+	public ResponseEntity<Object> getByShopId(Model model, @PathVariable("shopId") Long shopId) {
 		Response<Object> response = new Response<Object>();
 
 		try {
@@ -92,7 +106,6 @@ public class ProductController {
 					.stream()
 					.map(this.converter::apply)
 					.collect(Collectors.toList());
-			prods.forEach(p -> p.setShopDTO(null));
 			response.setData(prods);
 
 		} catch (EntityValidationException e) {
@@ -100,18 +113,22 @@ public class ProductController {
 			return ResponseEntity.badRequest().body(response);
 		}
 		return ResponseEntity.ok(response);
-
 	}
 
+	@ApiOperation(value = "Create Product", response = ProductDTO.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfull"),
+			@ApiResponse(code = 400, message = "Some business rule was not attended") 
+		})
 	@PostMapping(produces = "application/json")
 	public ResponseEntity<Object> create(HttpServletRequest request, @RequestBody ProductDTO productDTO,
 			BindingResult result) {
 
-		Response<Product> response = new Response<Product>();
+		Response<ProductDTO> response = new Response<ProductDTO>();
 		try {
 			Product product = this.converter.unapply(productDTO);
-			Product productPersisted = this.productService.create(product);
-			response.setData(productPersisted);
+			ProductDTO productPersistedDTO = this.converter.apply(this.productService.create(product));
+			response.setData(productPersistedDTO);
 		} catch (Exception e) {
 			response.addError(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
@@ -119,15 +136,20 @@ public class ProductController {
 		return ResponseEntity.ok(response);
 	}
 
+	@ApiOperation(value = "Update Product", response = ProductDTO.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfull"),
+			@ApiResponse(code = 400, message = "Some business rule was not attended") 
+		})
 	@PutMapping(produces = "application/json")
 	public ResponseEntity<Object> update(HttpServletRequest request, @RequestBody ProductDTO productDTO,
 			BindingResult result) {
 
-		Response<Product> response = new Response<Product>();
+		Response<ProductDTO> response = new Response<ProductDTO>();
 		try {
 			Product product = this.converter.unapply(productDTO);
-			Product productPersisted = this.productService.update(product);
-			response.setData(productPersisted);
+			ProductDTO productUpdatedDTO = this.converter.apply(this.productService.update(product));
+			response.setData(productUpdatedDTO);
 		} catch (Exception e) {
 			response.addError(e.getMessage());
 			return ResponseEntity.badRequest().body(response);
@@ -135,11 +157,17 @@ public class ProductController {
 		return ResponseEntity.ok(response);
 	}
 
+	@ApiOperation(value = "Delete Product by id", response = Response.class)
+	@ApiResponses(value = { 
+			@ApiResponse(code = 200, message = "Successfull"),
+			@ApiResponse(code = 400, message = "Some business rule was not attended") 
+		})
 	@DeleteMapping(value = "{id}")
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id, Model model) {
 		Response<Object> response = new Response<Object>();
 		try {
 			this.productService.delete(id);
+			response.setData("OK");
 		} catch (EntityValidationException e) {
 			response.addError(e.getMessage());
 			return ResponseEntity.badRequest().body(response);

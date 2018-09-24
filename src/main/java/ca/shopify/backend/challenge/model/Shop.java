@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,18 +20,9 @@ public class Shop {
 	@Setter
 	private Long id;
 
+	@NotNull
 	@Getter
 	@Setter
 	private String name;
-
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "shop")
-//	@Getter
-//	@Setter
-//	private Set<Product> products;
-
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "shop")
-//	@Getter
-//	@Setter
-//	private Set<Order> orders;
 
 }

@@ -34,15 +34,13 @@ public class OrderConverter implements DTOConverter<Order, OrderDTO> {
 		Order order = new Order();
 		order.setId(dto.getId());
 		order.setDateTime(dto.getDateTime());
+
+		List<LineItem> lineItems = dto.getLineItemsDTO().stream().map(li -> lineItemConverter.unapply(li))
+				.collect(Collectors.toList());
+		order.setLineItems(lineItems);
+
 		order.setDollarValue(dto.getDollarValue());
-
-		if (dto.getDollarValue() != null) {
-			List<LineItem> lineItems = dto.getLineItemsDTO().stream().map(li -> lineItemConverter.unapply(li))
-					.collect(Collectors.toList());
-
-			order.setLineItems(lineItems);
-		}
-
+		
 		return order;
 	}
 

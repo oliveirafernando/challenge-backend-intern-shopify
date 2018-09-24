@@ -11,13 +11,9 @@ public class LineItemDTO {
 	@Setter
 	private Long id;
 
-//	@Getter
-//	@Setter
-//	private OrderDTO orderDTO;
-
 	@Getter
 	@Setter
-	private ProductDTO productDTO;
+	private Long productId;
 
 	@Getter
 	@Setter
