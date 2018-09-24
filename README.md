@@ -4,7 +4,7 @@ Technical challenge to become an intern at Shopify
 
 ## Overview
 The goal of this document is to describe the artifacts provided in this project.
-Here, also is described some steps to build and execute the project.
+Here, also is described some steps to build and execute the project - see 1.3 topic.
 
 ## 1. Docker Image
 
@@ -15,7 +15,11 @@ Here, also is described some steps to build and execute the project.
 - docker pull oliveirafernando/inter-backend-challenge
 
 ### 1.3. Steps Build and Run the project.
-
+- Pre requirements:
+	- Jdk 1.8
+	- Maven 3
+	- Docker
+	
 #### 1.3.1. Compiling the image
 - sudo ./mvnw install dockerfile:build
 
