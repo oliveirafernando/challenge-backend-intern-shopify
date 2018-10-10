@@ -1,7 +1,3 @@
-# challenge-backend-intern-shopify
-
-Technical challenge to become an intern at Shopify
-
 ## Overview
 The goal of this document is to describe the artifacts provided in this project.
 Here, also is described some steps to build and execute the project.
@@ -38,8 +34,3 @@ The API methods were described using Swagger. There, were described the methods,
 	- JDBC URL: jdbc:h2:mem:testdb
 	- User Name: sa
 	- Password: <blank>
-
-## 4. Git Repository
-- The code was committed in a Gitlab repository using only two branches: development and master.
-- The most stable version can be found in the master branch.
-- URL: https://gitlab.com/oliveirafernando/challenge-backend-intern-shopify
